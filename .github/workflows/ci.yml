@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  push:
   pull_request:
 
 jobs:
@@ -20,4 +19,8 @@ jobs:
           run: shellcheck auto-commit.sh
 
         - name: Run tests
-          run: bats tests
+          run: |
+            tmp="$(mktemp -d)"
+            git init "$tmp"
+            cd "$tmp"
+            bats "$GITHUB_WORKSPACE/tests"
