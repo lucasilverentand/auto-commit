@@ -1,19 +1,23 @@
 name: CI
 
 on:
+  push:
   pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
 
-      - name: Run ShellCheck
-        run: shellcheck auto-commit.sh
+        - name: Install Bats
+          run: sudo apt-get update && sudo apt-get install -y bats
 
-      - name: Run tests
-        run: ./tests/auto-commit.sh
+        - name: Run ShellCheck
+          run: shellcheck auto-commit.sh
+
+        - name: Run tests
+          run: bats tests
