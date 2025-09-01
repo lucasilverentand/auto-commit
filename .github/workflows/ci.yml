@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run ShellCheck
+        run: shellcheck auto-commit.sh
+
+      - name: Install Bats
+        uses: bats/bats-action@v2
+
+      - name: Run tests
+        run: |
+          tmp=$(mktemp -d)
+          cp -R . "$tmp"
+          cd "$tmp"
+          git init
+          bats tests
