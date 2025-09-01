@@ -1,0 +1,21 @@
+name: 'Auto Commit'
+description: 'Automatically commit changes and push back to the repository with co-author.'
+author: 'GitHub Actions'
+inputs:
+  commit-message:
+    description: 'Commit message for the changes.'
+    required: false
+    default: 'chore: automated update'
+  filter:
+    description: 'Newline-separated list of glob patterns to allow.'
+    required: false
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: Commit changes
+      shell: bash
+      env:
+        FILTER: ${{ inputs.filter }}
+      run: |
+        ${{ github.action_path }}/auto-commit.sh "${{ inputs.commit-message }}"
