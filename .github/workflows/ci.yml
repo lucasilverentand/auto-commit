@@ -1,7 +1,6 @@
 name: CI
 
 on:
-  push:
   pull_request:
 
 jobs:
@@ -16,13 +15,5 @@ jobs:
       - name: Run ShellCheck
         run: shellcheck auto-commit.sh
 
-      - name: Install Bats
-        uses: bats/bats-action@v2
-
       - name: Run tests
-        run: |
-          tmp=$(mktemp -d)
-          cp -R . "$tmp"
-          cd "$tmp"
-          git init
-          bats tests
+        run: ./tests/auto-commit.sh
